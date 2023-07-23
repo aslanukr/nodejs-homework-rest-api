@@ -1,15 +1,15 @@
-import contactsService from "../models/contacts.js";
+import Contact from "../models/contact.js";
 import { HttpError } from "../helpers/index.js";
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
 
 const getAll = async (req, res) => {
-  const allContacts = await contactsService.listContacts();
+  const allContacts = await Contact.find({}, "-createdAt -updatedAt");
   res.json(allContacts);
 };
 
 const getById = async (req, res) => {
   const { contactId } = req.params;
-  const contactById = await contactsService.getContactById(contactId);
+  const contactById = await Contact.findById(contactId);
   if (!contactById) {
     throw HttpError(404, "Contact with such id was not found");
   }
@@ -17,13 +17,13 @@ const getById = async (req, res) => {
 };
 
 const add = async (req, res) => {
-  const newContact = await contactsService.addContact(req.body);
+  const newContact = await Contact.create(req.body);
   res.status(201).json(newContact);
 };
 
 const deleteById = async (req, res) => {
   const { contactId } = req.params;
-  const removedContact = await contactsService.removeContact(contactId);
+  const removedContact = await Contact.findByIdAndRemove(contactId);
   if (!removedContact) {
     throw HttpError(404, "Contact with such id was not found");
   }
@@ -32,10 +32,20 @@ const deleteById = async (req, res) => {
 
 const updateById = async (req, res) => {
   const { contactId } = req.params;
-  const updatedContact = await contactsService.updateContact(
-    contactId,
-    req.body
-  );
+  const updatedContact = await Contact.findByIdAndUpdate(contactId, req.body, {
+    new: true,
+  });
+  if (!updatedContact) {
+    throw HttpError(404, "Contact with such id was not found");
+  }
+  res.json(updatedContact);
+};
+
+const updateFavorite = async (req, res) => {
+  const { contactId } = req.params;
+  const updatedContact = await Contact.findByIdAndUpdate(contactId, req.body, {
+    new: true,
+  });
   if (!updatedContact) {
     throw HttpError(404, "Contact with such id was not found");
   }
@@ -48,4 +58,5 @@ export default {
   add: ctrlWrapper(add),
   deleteById: ctrlWrapper(deleteById),
   updateById: ctrlWrapper(updateById),
+  updateFavorite: ctrlWrapper(updateFavorite),
 };
