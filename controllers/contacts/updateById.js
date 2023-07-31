@@ -1,5 +1,5 @@
 import Contact from "../../models/contact.js";
-import ctrlWrapper from "../../decorators/ctrlWrapper.js";
+import { ctrlWrapper } from "../../decorators/index.js";
 import { HttpError } from "../../helpers/index.js";
 
 const updateById = async (req, res) => {

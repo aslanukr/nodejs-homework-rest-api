@@ -1,6 +1,6 @@
 import Contact from "../../models/contact.js";
 import { HttpError } from "../../helpers/index.js";
-import ctrlWrapper from "../../decorators/ctrlWrapper.js";
+import { ctrlWrapper } from "../../decorators/index.js";
 
 const deleteById = async (req, res) => {
   const { contactId } = req.params;
