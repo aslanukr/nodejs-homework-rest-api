@@ -5,6 +5,7 @@ import {
   signIn,
   getCurrent,
   logout,
+  subscriptionUpdate,
 } from "../../controllers/users/index.js";
 
 import userSchemas from "../../schemas/user-schemas.js";
@@ -20,5 +21,12 @@ authRouter.post("/login", validateBody(userSchemas.userSignSchema), signIn);
 authRouter.get("/current", authenticate, getCurrent);
 
 authRouter.post("/logout", authenticate, logout);
+
+authRouter.patch(
+  "/",
+  authenticate,
+  validateBody(userSchemas.subscriptionSchema),
+  subscriptionUpdate
+);
 
 export default authRouter;

@@ -8,4 +8,8 @@ const userSignSchema = Joi.object({
   token: Joi.string(),
 });
 
-export default { userSignSchema };
+const subscriptionSchema = Joi.object({
+  subscription: Joi.string().valid("starter", "pro", "business"),
+});
+
+export default { userSignSchema, subscriptionSchema };
