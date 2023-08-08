@@ -7,6 +7,8 @@ import {
   logout,
   subscriptionUpdate,
   updateAvatar,
+  verifyEmail,
+  resendVerifyEmail,
 } from "../../controllers/users/index.js";
 
 import userSchemas from "../../schemas/user-schemas.js";
@@ -16,6 +18,14 @@ import { authenticate, resizeAvatar, upload } from "../../middlewares/index.js";
 const authRouter = express.Router();
 
 authRouter.post("/register", validateBody(userSchemas.userSignSchema), signUp);
+
+authRouter.get("/verify/:verificationToken", verifyEmail);
+
+authRouter.post(
+  "/verify",
+  validateBody(userSchemas.userEmailSchema),
+  resendVerifyEmail
+);
 
 authRouter.post("/login", validateBody(userSchemas.userSignSchema), signIn);
 
