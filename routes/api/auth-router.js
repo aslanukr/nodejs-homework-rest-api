@@ -6,11 +6,12 @@ import {
   getCurrent,
   logout,
   subscriptionUpdate,
+  updateAvatar,
 } from "../../controllers/users/index.js";
 
 import userSchemas from "../../schemas/user-schemas.js";
 import { validateBody } from "../../decorators/index.js";
-import { authenticate } from "../../middlewares/index.js";
+import { authenticate, resizeAvatar, upload } from "../../middlewares/index.js";
 
 const authRouter = express.Router();
 
@@ -27,6 +28,14 @@ authRouter.patch(
   authenticate,
   validateBody(userSchemas.subscriptionSchema),
   subscriptionUpdate
+);
+
+authRouter.patch(
+  "/avatars",
+  authenticate,
+  upload.single("avatar"),
+  resizeAvatar,
+  updateAvatar
 );
 
 export default authRouter;
