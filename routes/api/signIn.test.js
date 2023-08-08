@@ -60,12 +60,11 @@ describe("test login route", () => {
       email: "test@gmail.com",
       password: "000000000",
     };
-    const { statusCode, body } = await request(app)
+    const { statusCode } = await request(app)
       .post("/api/users/login")
       .send(loginData);
 
     expect(statusCode).toBe(401);
-    expect(() => signIn(body).toThrow("Email or password is wrong"));
   });
 
   test("test login with missing required fields", async () => {
@@ -73,11 +72,10 @@ describe("test login route", () => {
       email: "",
       password: "",
     };
-    const { statusCode, body } = await request(app)
+    const { statusCode } = await request(app)
       .post("/api/users/login")
       .send(loginData);
 
     expect(statusCode).toBe(400);
-    expect(() => signIn(body).toThrow("Missing required field"));
   });
 });
