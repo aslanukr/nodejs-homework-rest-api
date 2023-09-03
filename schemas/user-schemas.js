@@ -8,8 +8,12 @@ const userSignSchema = Joi.object({
   token: Joi.string(),
 });
 
+const userEmailSchema = Joi.object({
+  email: Joi.string().pattern(emailRegexp).required(),
+});
+
 const subscriptionSchema = Joi.object({
   subscription: Joi.string().valid("starter", "pro", "business"),
 });
 
-export default { userSignSchema, subscriptionSchema };
+export default { userSignSchema, subscriptionSchema, userEmailSchema };
